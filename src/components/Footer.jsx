@@ -3,6 +3,7 @@ const links = [
   { label: 'Çeşitleri', href: '#types' },
   { label: 'Tepsi Türleri', href: '#trays' },
   { label: 'Ürünler', href: '#products' },
+  { label: 'Hesaplamalar', href: '#calculations' },
 ]
 
 export default function Footer() {

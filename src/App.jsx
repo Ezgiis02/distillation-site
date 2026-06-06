@@ -5,6 +5,7 @@ import WhatIsDistillation from './components/WhatIsDistillation'
 import Types from './components/Types'
 import TrayTypes from './components/TrayTypes'
 import Products from './components/Products'
+import Calculations from './components/Calculations'
 import Footer from './components/Footer'
 import Modal from './components/Modal'
 
@@ -19,6 +20,7 @@ export default function App() {
       <Types onOpen={setModal} />
       <TrayTypes onOpen={setModal} />
       <Products onOpen={setModal} />
+      <Calculations />
       <Footer />
       {modal && <Modal data={modal} onClose={() => setModal(null)} />}
     </div>
