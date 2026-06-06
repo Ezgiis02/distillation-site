@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronRight, CheckCircle2 } from 'lucide-react'
+import { ChevronDown, CheckCircle2 } from 'lucide-react'
 
 const types = [
   {
@@ -66,13 +66,8 @@ const types = [
 ]
 
 export default function Types() {
-  const [selectedId, setSelectedId] = useState(null)
-
-  const selected = types.find(t => t.id === selectedId)
-
-  const handleSelect = (id) => {
-    setSelectedId(prev => prev === id ? null : id)
-  }
+  const [openId, setOpenId] = useState(null)
+  const toggle = (id) => setOpenId(prev => prev === id ? null : id)
 
   return (
     <section id="types" className="py-24 bg-steel-50 border-t border-steel-200">
@@ -81,105 +76,88 @@ export default function Types() {
           <p className="text-blue-700 text-sm font-semibold uppercase tracking-widest mb-3">Sınıflandırma</p>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <h2 className="font-serif text-4xl text-steel-900 leading-tight">Distilasyon Çeşitleri</h2>
-            <p className="text-steel-500 text-sm max-w-sm">Bir türe tıklayarak detaylı bilgiye ulaşın.</p>
+            <p className="text-steel-500 text-sm max-w-sm">Her uygulama için doğru yöntemi seçmek verimlilik ve ürün kalitesi açısından kritiktir.</p>
           </div>
         </div>
 
-        {/* Fixed-height card grid — never changes size */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {types.map(t => {
-            const isSelected = selectedId === t.id
+        <div className="border border-steel-200 rounded-xl overflow-hidden divide-y divide-steel-200">
+          {types.map((t) => {
+            const isOpen = openId === t.id
             return (
-              <button
-                key={t.id}
-                onClick={() => handleSelect(t.id)}
-                className={`text-left rounded-xl border px-5 py-5 transition-all duration-150 group ${
-                  t.highlight
-                    ? isSelected
-                      ? 'bg-navy-800 border-navy-600 ring-2 ring-blue-400 ring-offset-2 ring-offset-steel-50'
-                      : 'bg-navy-800 border-navy-700 hover:border-navy-500'
-                    : isSelected
-                      ? 'bg-white border-blue-400 ring-2 ring-blue-400 ring-offset-2 ring-offset-steel-50'
-                      : 'bg-white border-steel-200 hover:border-steel-300'
-                }`}
-              >
-                <div className="flex items-start justify-between gap-2 mb-3">
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${
+              <div key={t.id} className={isOpen
+                ? t.highlight ? 'bg-navy-800' : 'bg-white'
+                : t.highlight ? 'bg-navy-800 hover:bg-navy-750' : 'bg-white hover:bg-steel-50'
+              }>
+                {/* Header row — always visible, never moves */}
+                <button
+                  onClick={() => toggle(t.id)}
+                  className="w-full text-left px-6 py-5 flex items-center gap-4"
+                >
+                  <span className={`hidden sm:inline-block text-xs font-medium px-2.5 py-1 rounded-full border shrink-0 ${
                     t.highlight
-                      ? 'border-white/20 text-white/70 bg-white/10'
+                      ? 'border-white/20 text-white/65 bg-white/10'
                       : 'border-steel-200 text-steel-500 bg-steel-50'
                   }`}>
                     {t.tag}
                   </span>
-                  <ChevronRight
-                    size={14}
-                    className={`shrink-0 mt-0.5 transition-transform duration-150 ${
-                      isSelected ? 'rotate-90' : 'group-hover:translate-x-0.5'
-                    } ${t.highlight ? 'text-white/40' : 'text-steel-300'}`}
+
+                  <div className="flex-1 min-w-0">
+                    <span className={`font-semibold text-sm sm:text-base ${t.highlight ? 'text-white' : 'text-steel-900'}`}>
+                      {t.title}
+                    </span>
+                    {!isOpen && (
+                      <span className={`hidden sm:inline ml-3 text-sm ${t.highlight ? 'text-white/50' : 'text-steel-400'}`}>
+                        {t.short}
+                      </span>
+                    )}
+                  </div>
+
+                  <ChevronDown
+                    size={16}
+                    className={`shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''} ${t.highlight ? 'text-white/40' : 'text-steel-400'}`}
                   />
-                </div>
-                <h3 className={`font-semibold text-sm mb-1.5 ${t.highlight ? 'text-white' : 'text-steel-900'}`}>
-                  {t.title}
-                </h3>
-                <p className={`text-xs leading-relaxed ${t.highlight ? 'text-white/60' : 'text-steel-500'}`}>
-                  {t.short}
-                </p>
-              </button>
+                </button>
+
+                {/* Expanded body — content-driven height */}
+                {isOpen && (
+                  <div className={`px-6 pb-6 border-t ${t.highlight ? 'border-white/10' : 'border-steel-100'}`}>
+                    <div className="pt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {/* Description */}
+                      <div className="md:col-span-2">
+                        <p className={`text-sm leading-relaxed ${t.highlight ? 'text-white/75' : 'text-steel-600'}`}>
+                          {t.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-4">
+                          {t.uses.map(u => (
+                            <span key={u} className={`text-xs px-2.5 py-1 rounded-full border ${
+                              t.highlight
+                                ? 'border-white/20 text-white/65 bg-white/10'
+                                : 'border-steel-200 text-steel-600 bg-steel-50'
+                            }`}>
+                              {u}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Stats */}
+                      <div className="grid grid-cols-2 md:grid-cols-1 gap-3">
+                        <div className={`rounded-lg px-4 py-3 ${t.highlight ? 'bg-white/10' : 'bg-steel-50 border border-steel-100'}`}>
+                          <p className={`text-xs mb-1 ${t.highlight ? 'text-white/40' : 'text-steel-400'}`}>Verimlilik</p>
+                          <p className={`text-sm font-semibold ${t.highlight ? 'text-white' : 'text-steel-800'}`}>{t.efficiency}</p>
+                        </div>
+                        <div className={`rounded-lg px-4 py-3 ${t.highlight ? 'bg-white/10' : 'bg-steel-50 border border-steel-100'}`}>
+                          <p className={`text-xs mb-1 ${t.highlight ? 'text-white/40' : 'text-steel-400'}`}>Karmaşıklık</p>
+                          <p className={`text-sm font-semibold ${t.highlight ? 'text-white' : 'text-steel-800'}`}>{t.complexity}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             )
           })}
         </div>
-
-        {/* Detail panel — appears below the entire grid */}
-        {selected && (
-          <div className="mt-4 rounded-xl border border-blue-200 bg-white overflow-hidden">
-            {/* Panel header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-steel-100 bg-steel-50">
-              <div>
-                <p className="font-semibold text-steel-900">{selected.title}</p>
-                <p className="text-xs text-steel-500 mt-0.5">{selected.tag}</p>
-              </div>
-              <button
-                onClick={() => setSelectedId(null)}
-                className="text-steel-400 hover:text-steel-700 text-xs font-medium border border-steel-200 px-3 py-1.5 rounded-lg transition-colors bg-white hover:bg-steel-50"
-              >
-                Kapat
-              </button>
-            </div>
-
-            {/* Panel body */}
-            <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Description */}
-              <div className="md:col-span-2">
-                <p className="text-steel-600 text-sm leading-relaxed">{selected.description}</p>
-              </div>
-
-              {/* Meta */}
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-steel-50 border border-steel-100 rounded-lg px-3 py-3">
-                    <p className="text-xs text-steel-400 mb-0.5">Verimlilik</p>
-                    <p className="text-sm font-semibold text-steel-900">{selected.efficiency}</p>
-                  </div>
-                  <div className="bg-steel-50 border border-steel-100 rounded-lg px-3 py-3">
-                    <p className="text-xs text-steel-400 mb-0.5">Karmaşıklık</p>
-                    <p className="text-sm font-semibold text-steel-900">{selected.complexity}</p>
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-steel-400 mb-2">Kullanım Alanları</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {selected.uses.map(u => (
-                      <span key={u} className="text-xs border border-steel-200 text-steel-600 bg-steel-50 px-2.5 py-1 rounded-full">
-                        {u}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </section>
   )
