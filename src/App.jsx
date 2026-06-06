@@ -17,8 +17,8 @@ export default function App() {
       <Navbar />
       <Hero />
       <WhatIsDistillation />
-      <Types onOpen={setModal} />
-      <TrayTypes onOpen={setModal} />
+      <Types />
+      <TrayTypes />
       <Products onOpen={setModal} />
       <Calculations />
       <Footer />
