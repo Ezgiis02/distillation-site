@@ -39,6 +39,21 @@ export default function Products({ onOpen }) {
           <p className="text-steel-500 mt-2">Mısır Distilasyon Kolonu — DistillaTech</p>
         </div>
 
+        {/* Column photo */}
+        <div className="mb-8 rounded-2xl overflow-hidden border border-steel-200 bg-white">
+          <div className="relative">
+            <img
+              src="/column.jpg"
+              alt="DistillaTech MDK-16 Distilasyon Kolonu ve Tepsi Detayı"
+              className="w-full object-cover max-h-[520px]"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-steel-900/70 to-transparent px-6 py-5">
+              <p className="text-white font-semibold text-sm">MDK-16 — Mısır Distilasyon Kolonu</p>
+              <p className="text-white/70 text-xs mt-0.5">16 Tepsi Kademesi · Ø 0.71 m · 9.11 m Yükseklik</p>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: description + CTA */}
           <div className="lg:col-span-1 flex flex-col gap-6">
