@@ -6,6 +6,7 @@ const links = [
   { label: 'Çeşitleri', href: '#types' },
   { label: 'Tepsi Türleri', href: '#trays' },
   { label: 'Ürünler', href: '#products' },
+  { label: 'Teknik Detaylar', href: '#techspecs' },
   { label: 'Hesaplamalar', href: '#calculations' },
 ]
 

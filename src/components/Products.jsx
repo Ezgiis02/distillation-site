@@ -77,12 +77,13 @@ export default function Products({ onOpen }) {
                 ))}
               </div>
 
-              <button
-                onClick={() => onOpen(modalData)}
-                className="mt-6 w-full bg-navy-800 hover:bg-navy-700 text-white text-sm font-medium py-2.5 px-4 rounded transition-colors"
+              <a
+                href="#techspecs"
+                className="mt-6 w-full bg-navy-800 hover:bg-navy-700 text-white text-sm font-medium py-2.5 px-4 rounded transition-colors flex items-center justify-center gap-2"
               >
                 Tüm Teknik Detaylar
-              </button>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M7 12l-3.5-3.5M7 12l3.5-3.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </a>
             </div>
 
             {/* Tags */}
